@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1093349162832",
+    "project_id": "clientsmanager-97b9e",
+    "storage_bucket": "clientsmanager-97b9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1093349162832:android:26a1f1bb99475a83c73655",
+        "android_client_info": {
+          "package_name": "com.magicworld.clientsmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1093349162832-r03epmvs39jkhk1jiil8u0jiehmbrvkp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6jGXNcbTQZCVFnLGS_WluBex43xB6GAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1093349162832-r03epmvs39jkhk1jiil8u0jiehmbrvkp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
