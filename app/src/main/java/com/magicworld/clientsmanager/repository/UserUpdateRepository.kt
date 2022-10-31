@@ -6,7 +6,7 @@ import com.google.firebase.ktx.Firebase
 import com.magicworld.clientsmanager.model.User
 import kotlinx.coroutines.tasks.await
 
-class UpdateRepository {
+class UserUpdateRepository {
 
     private val db = Firebase.firestore
 

@@ -1,4 +1,4 @@
-package com.magicworld.clientsmanager.ui.update
+package com.magicworld.clientsmanager.user.update
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -29,18 +29,18 @@ import com.magicworld.clientsmanager.model.User
 import com.magicworld.clientsmanager.ui.theme.primaveraVerde
 import com.magicworld.clientsmanager.ui.utils.MyAlertDialog
 import com.magicworld.clientsmanager.ui.utils.MyTextField
-import com.magicworld.clientsmanager.viewmodel.UpdateViewModel
+import com.magicworld.clientsmanager.viewmodel.UserUpdateViewModel
 
 @Composable
-fun UpdateScreen(navController: NavHostController, updateViewModel: UpdateViewModel, user: User) {
+fun UserUpdateScreen(navController: NavHostController, userUpdateViewModel: UserUpdateViewModel, user: User) {
     val context = LocalContext.current
 
     Scaffold(
         topBar = {
-            TopAppBarUpdateView(navController, user ,updateViewModel)
+            TopAppBarUpdateView(navController, user ,userUpdateViewModel)
         },
         floatingActionButton = {
-            UpdateFloatingButton(updateViewModel) {
+            UpdateFloatingButton(userUpdateViewModel) {
                 Toast.makeText(context, "Los cambios han sido guardados", Toast.LENGTH_LONG).show()
                 navController.navigateUp()
             }
@@ -48,7 +48,7 @@ fun UpdateScreen(navController: NavHostController, updateViewModel: UpdateViewMo
         floatingActionButtonPosition = FabPosition.End
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            UpdateBody(user, updateViewModel)
+            UpdateBody(user, userUpdateViewModel)
         }
     }
 }
@@ -57,7 +57,7 @@ fun UpdateScreen(navController: NavHostController, updateViewModel: UpdateViewMo
 fun TopAppBarUpdateView(
     navController: NavHostController,
     user: User,
-    updateViewModel: UpdateViewModel
+    userUpdateViewModel: UserUpdateViewModel
 ) {
 
     var isSet by rememberSaveable { mutableStateOf(false) }
@@ -81,7 +81,7 @@ fun TopAppBarUpdateView(
             IconButton(
                 onClick = {
                     isSet = !isSet
-                    updateViewModel.updateSet(isSet, user.id)
+                    userUpdateViewModel.updateSet(isSet, user.id)
                 }) {
                 Icon(painterResource(R.drawable.push_pin),
                     "fijar en lista",
@@ -101,24 +101,20 @@ fun TopAppBarUpdateView(
         description = "Estas seguro que quieres borrar ${user.name}",
         show = showDialog,
         onDismiss = { showDialog = false }) {
-        deleteUser(user, updateViewModel, navController)
+        deleteUser(user, userUpdateViewModel, navController)
     }
 
 }
-fun deleteUser(user: User, updateViewModel: UpdateViewModel, navController: NavHostController) {
-    updateViewModel.deleteUser(user.id)
-    navController.popBackStack()
-}
 
 @Composable
-fun UpdateFloatingButton(updateViewModel: UpdateViewModel, showMessage: () -> Unit) {
+fun UpdateFloatingButton(userUpdateViewModel: UserUpdateViewModel, showMessage: () -> Unit) {
 
-    val updateUser by updateViewModel.updateUser.observeAsState(initial = User())
+    val updateUser by userUpdateViewModel.updateUser.observeAsState(initial = User())
     val user: User = updateUser
 
     FloatingActionButton(
         onClick = {
-            updateViewModel.updateUser(user)
+            userUpdateViewModel.updateUser(user)
             showMessage()
         },
         backgroundColor = MaterialTheme.colors.primary) {
@@ -134,7 +130,7 @@ fun UpdateFloatingButton(updateViewModel: UpdateViewModel, showMessage: () -> Un
 }
 
 @Composable
-fun UpdateBody(user: User, updateViewModel: UpdateViewModel) {
+fun UpdateBody(user: User, userUpdateViewModel: UserUpdateViewModel) {
     var name by rememberSaveable { mutableStateOf(user.name) }
     var email by rememberSaveable { mutableStateOf(user.email) }
     var phone by rememberSaveable { mutableStateOf(user.phone) }
@@ -142,7 +138,7 @@ fun UpdateBody(user: User, updateViewModel: UpdateViewModel) {
     var updateUser by rememberSaveable { mutableStateOf(User()) }
     updateUser = User(user.id, name, email, phone, address, user.set)
 
-    updateViewModel.saveUpdateUser(updateUser)
+    userUpdateViewModel.saveUpdateUser(updateUser)
 
     Column(Modifier
         .fillMaxSize()
@@ -156,5 +152,9 @@ fun UpdateBody(user: User, updateViewModel: UpdateViewModel) {
 
 }
 
+fun deleteUser(user: User, userUpdateViewModel: UserUpdateViewModel, navController: NavHostController) {
+    userUpdateViewModel.deleteUser(user.id)
+    navController.popBackStack()
+}
 
 

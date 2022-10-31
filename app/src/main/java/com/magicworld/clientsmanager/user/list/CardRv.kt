@@ -1,4 +1,4 @@
-package com.magicworld.clientsmanager.ui.list
+package com.magicworld.clientsmanager.user.list
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

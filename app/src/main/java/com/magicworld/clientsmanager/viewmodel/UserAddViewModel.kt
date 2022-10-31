@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.magicworld.clientsmanager.model.User
-import com.magicworld.clientsmanager.repository.AddRepository
+import com.magicworld.clientsmanager.repository.UserAddRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AddViewModel: ViewModel() {
+class UserAddViewModel: ViewModel() {
 
-    private val addRepository = AddRepository()
+    private val userAddRepository = UserAddRepository()
 
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> = _user
@@ -21,7 +21,7 @@ class AddViewModel: ViewModel() {
 
     fun createUserInDatabase(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-            addRepository.createUserInDatabase(user)
+            userAddRepository.createUserInDatabase(user)
         }
     }
 

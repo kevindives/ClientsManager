@@ -16,19 +16,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.magicworld.clientsmanager.model.Routes.*
 import com.magicworld.clientsmanager.model.User
-import com.magicworld.clientsmanager.ui.add.AddClientScreen
-import com.magicworld.clientsmanager.ui.list.ListScreen
+import com.magicworld.clientsmanager.user.add.UserAddScreen
+import com.magicworld.clientsmanager.user.list.UserListScreen
 import com.magicworld.clientsmanager.ui.theme.ClientsManagerTheme
-import com.magicworld.clientsmanager.ui.update.UpdateScreen
-import com.magicworld.clientsmanager.viewmodel.AddViewModel
-import com.magicworld.clientsmanager.viewmodel.ListViewModel
-import com.magicworld.clientsmanager.viewmodel.UpdateViewModel
+import com.magicworld.clientsmanager.user.update.UserUpdateScreen
+import com.magicworld.clientsmanager.viewmodel.UserAddViewModel
+import com.magicworld.clientsmanager.viewmodel.UserListViewModel
+import com.magicworld.clientsmanager.viewmodel.UserUpdateViewModel
 
 
 class MainActivity : ComponentActivity() {
-    private val addViewModel : AddViewModel by viewModels()
-    private val listViewModel: ListViewModel by viewModels()
-    private val updateViewModel: UpdateViewModel by viewModels()
+    private val userAddViewModel : UserAddViewModel by viewModels()
+    private val userListViewModel: UserListViewModel by viewModels()
+    private val userUpdateViewModel: UserUpdateViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,15 +38,14 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
 
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = ListScreen.route ){
-                        composable(ListScreen.route){ ListScreen( navController, listViewModel)}
-                        composable(AddScreen.route){ AddClientScreen( navController, addViewModel )}
-                        composable(UpdateScreen.route){
+                    NavHost(navController = navController, startDestination = UserListScreen.route ){
+                        composable(UserListScreen.route){ UserListScreen( navController, userListViewModel) }
+                        composable(UserAddScreen.route){ UserAddScreen( navController, userAddViewModel ) }
+                        composable(UserUpdateScreen.route){
                             val user = navController.previousBackStackEntry?.savedStateHandle?.get<User>("user")
                             user?.let {
-                                UpdateScreen( navController , updateViewModel , user)
+                                UserUpdateScreen( navController , userUpdateViewModel , user)
                             }
-
                         }
                     }
 

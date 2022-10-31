@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.magicworld.clientsmanager.model.User
-import com.magicworld.clientsmanager.repository.ListRepository
+import com.magicworld.clientsmanager.repository.UserListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ListViewModel: ViewModel() {
+class UserListViewModel: ViewModel() {
 
-    val listRepository = ListRepository()
+    private val userListRepository = UserListRepository()
 
     private val userLoad = MutableLiveData<ArrayList<User>>()
     val onUserLoaded: LiveData<ArrayList<User>> = userLoad
@@ -22,7 +22,7 @@ class ListViewModel: ViewModel() {
 
     fun getUserFromFirebase(){
         viewModelScope.launch(Dispatchers.IO) {
-            userLoad.postValue(listRepository.getSuperheroesFromFireBase())
+            userLoad.postValue(userListRepository.getSuperheroesFromFireBase())
             _isLoading.postValue(false)
         }
 

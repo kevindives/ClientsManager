@@ -1,5 +1,6 @@
-package com.magicworld.clientsmanager.ui.add
+package com.magicworld.clientsmanager.user.add
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -22,28 +24,35 @@ import com.magicworld.clientsmanager.R
 import com.magicworld.clientsmanager.model.User
 import com.magicworld.clientsmanager.ui.theme.primaveraVerde
 import com.magicworld.clientsmanager.ui.utils.MyTextField
-import com.magicworld.clientsmanager.viewmodel.AddViewModel
+import com.magicworld.clientsmanager.viewmodel.UserAddViewModel
 
 @Composable
-fun AddClientScreen(navController: NavHostController, addViewModel: AddViewModel) {
+fun UserAddScreen(navController: NavHostController, userAddViewModel: UserAddViewModel) {
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
-            TopAppBarAddView(navController, addViewModel)
+            TopAppBarAddView( userAddViewModel){
+                Toast.makeText(context, "Usuario guardado con exito" , Toast.LENGTH_LONG).show()
+                navController.navigateUp()
+            }
         }
     ) { padding ->
 
         Box(modifier = Modifier.padding(padding)) {
-            AddBody(addViewModel)
+            AddBody(userAddViewModel)
         }
     }
 }
 
 
 @Composable
-fun TopAppBarAddView(navController: NavHostController, addViewModel: AddViewModel) {
+fun TopAppBarAddView(
+    userAddViewModel: UserAddViewModel,
+    showMessage: () -> Unit,
+) {
     var isSet by rememberSaveable { mutableStateOf(false) }
-    val user by addViewModel.user.observeAsState(initial = User())
+    val user by userAddViewModel.user.observeAsState(initial = User())
     val newUser = user
 
     TopAppBar(
@@ -53,8 +62,8 @@ fun TopAppBarAddView(navController: NavHostController, addViewModel: AddViewMode
         navigationIcon = {
             IconButton(
                 onClick = {
-                    addViewModel.createUserInDatabase(newUser)
-                    navController.navigateUp()
+                    userAddViewModel.createUserInDatabase(newUser)
+                    showMessage()
                 }
             ) {
                 Icon(painterResource(R.drawable.arrow_back_ios),
@@ -67,7 +76,7 @@ fun TopAppBarAddView(navController: NavHostController, addViewModel: AddViewMode
             IconButton(
                 onClick = {
                     isSet = !isSet
-                    addViewModel.saveSet(isSet)
+                    userAddViewModel.saveSet(isSet)
                 }
             ) {
                 Icon(painterResource(R.drawable.push_pin),
@@ -80,17 +89,17 @@ fun TopAppBarAddView(navController: NavHostController, addViewModel: AddViewMode
 }
 
 @Composable
-fun AddBody(addViewModel: AddViewModel) {
+fun AddBody(userAddViewModel: UserAddViewModel) {
 
     var name by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var phone by rememberSaveable { mutableStateOf("") }
     var address by rememberSaveable { mutableStateOf("") }
-    val set by addViewModel.isSet.observeAsState(initial = "otras")
+    val set by userAddViewModel.isSet.observeAsState(initial = "otras")
     var user by rememberSaveable { mutableStateOf(User()) }
 
-    user = User("" , name, email, phone,address, set )
-    addViewModel.saveUser(user)
+    user = User("", name, email, phone, address, set)
+    userAddViewModel.saveUser(user)
 
     Column(Modifier.fillMaxSize()) {
         MyTextField(campo = name, placeholder = "Nombre") { name = it }

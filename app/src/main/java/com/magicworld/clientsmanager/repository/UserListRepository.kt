@@ -7,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.magicworld.clientsmanager.model.User
 import kotlinx.coroutines.tasks.await
 
-class ListRepository {
+class UserListRepository {
 
     suspend fun getSuperheroesFromFireBase(): ArrayList<User> {
         val db = Firebase.firestore
@@ -18,6 +18,7 @@ class ListRepository {
         for (user in result)
             listUser.add(user.toObject())
 
+        listUser.sortBy { it.set }
         return listUser
     }
 }

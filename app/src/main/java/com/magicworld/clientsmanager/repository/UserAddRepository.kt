@@ -4,7 +4,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.magicworld.clientsmanager.model.User
 
-class AddRepository {
+class UserAddRepository {
 
     fun createUserInDatabase(user: User) {
         val db = Firebase.firestore

@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.magicworld.clientsmanager.model.User
-import com.magicworld.clientsmanager.repository.UpdateRepository
+import com.magicworld.clientsmanager.repository.UserUpdateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UpdateViewModel: ViewModel() {
-    private val updateRepository = UpdateRepository()
+class UserUpdateViewModel: ViewModel() {
+    private val userUpdateRepository = UserUpdateRepository()
 
     private val _updateUser = MutableLiveData<User>()
     val updateUser: LiveData<User> = _updateUser
@@ -21,7 +21,7 @@ class UpdateViewModel: ViewModel() {
 
     fun updateUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-             messageFromFirebase.postValue(updateRepository.updateUser(user))
+             messageFromFirebase.postValue(userUpdateRepository.updateUser(user))
         }
 
     }
@@ -33,13 +33,13 @@ class UpdateViewModel: ViewModel() {
     fun updateSet(isSet: Boolean, id: String) {
         val set = if (isSet) "fijadas" else "otras"
         viewModelScope.launch(Dispatchers.IO) {
-            updateRepository.updateSet(set , id)
+            userUpdateRepository.updateSet(set , id)
         }
     }
 
     fun deleteUser(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            updateRepository.deleteUser(id)
+            userUpdateRepository.deleteUser(id)
         }
     }
 

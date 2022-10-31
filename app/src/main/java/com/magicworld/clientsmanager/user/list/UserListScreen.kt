@@ -1,6 +1,6 @@
 @file:Suppress("OPT_IN_IS_NOT_ENABLED")
 
-package com.magicworld.clientsmanager.ui.list
+package com.magicworld.clientsmanager.user.list
 
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -29,14 +29,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.magicworld.clientsmanager.R
 import com.magicworld.clientsmanager.model.Routes
-import com.magicworld.clientsmanager.model.Routes.AddScreen
+import com.magicworld.clientsmanager.model.Routes.UserAddScreen
 import com.magicworld.clientsmanager.model.User
 import com.magicworld.clientsmanager.ui.theme.aliceAzul
-import com.magicworld.clientsmanager.viewmodel.ListViewModel
+import com.magicworld.clientsmanager.ui.theme.turquesaMedio
+import com.magicworld.clientsmanager.viewmodel.UserListViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ListScreen(navController: NavHostController, listViewModel: ListViewModel) {
+fun UserListScreen(navController: NavHostController, userListViewModel: UserListViewModel) {
 
     Scaffold(
         topBar = { TopAppBarList() },
@@ -47,7 +48,7 @@ fun ListScreen(navController: NavHostController, listViewModel: ListViewModel) {
             .fillMaxSize()
             .padding(padding)) {
 
-            BodyList(listViewModel, navController)
+            BodyList(userListViewModel, navController)
         }
     }
 }
@@ -90,8 +91,8 @@ fun ListTitle() {
 @Composable
 fun FloatingListBottom(navController: NavHostController) {
     FloatingActionButton(
-        onClick = { navController.navigate(AddScreen.route) },
-        backgroundColor = MaterialTheme.colors.primary
+        onClick = { navController.navigate(UserAddScreen.route) },
+        backgroundColor = turquesaMedio
     ) {
         Icon(
             imageVector = Icons.Outlined.Add,
@@ -103,13 +104,13 @@ fun FloatingListBottom(navController: NavHostController) {
 
 @ExperimentalFoundationApi
 @Composable
-fun BodyList(listViewModel: ListViewModel, navController: NavHostController) {
+fun BodyList(userListViewModel: UserListViewModel, navController: NavHostController) {
 
-    listViewModel.getUserFromFirebase()
-    val list by listViewModel.onUserLoaded.observeAsState(arrayListOf())
-    list.sortBy { it.set }
+    userListViewModel.getUserFromFirebase()
+    val list by userListViewModel.onUserLoaded.observeAsState(arrayListOf())
     val listUser: Map<String, List<User>> = list.groupBy { it.set }
-    val isLoading by listViewModel.isLoading.observeAsState(initial = true)
+    val isLoading by userListViewModel.isLoading.observeAsState(initial = true)
+
     if (isLoading) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -142,7 +143,7 @@ fun ItemUser(user: User, navController: NavHostController) {
     MyCard(user,
         onEditSelected = {
         navController.currentBackStackEntry?.savedStateHandle?.set("user", user)
-        navController.navigate(Routes.UpdateScreen.route)
+        navController.navigate(Routes.UserUpdateScreen.route)
     }, onUserSelected = {})
 }
 
