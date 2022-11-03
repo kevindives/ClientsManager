@@ -34,30 +34,29 @@ import com.magicworld.clientsmanager.viewmodel.UserUpdateViewModel
 @Composable
 fun UserUpdateScreen(navController: NavHostController, userUpdateViewModel: UserUpdateViewModel, user: User) {
     val context = LocalContext.current
+    val updateUser by userUpdateViewModel.updateUser.observeAsState(User())
 
     Scaffold(
         topBar = {
-            TopAppBarUpdateView(navController, user ,userUpdateViewModel)
-        },
-        floatingActionButton = {
-            UpdateFloatingButton(userUpdateViewModel) {
-                Toast.makeText(context, "Los cambios han sido guardados", Toast.LENGTH_LONG).show()
+            TopAppBarUserUpdate(navController, user ,userUpdateViewModel){
+                userUpdateViewModel.updateUserInDatabase(updateUser)
+                Toast.makeText(context, "Usuario modificado correctamente", Toast.LENGTH_LONG).show()
                 navController.navigateUp()
             }
-        },
-        floatingActionButtonPosition = FabPosition.End
+        }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            UpdateBody(user, userUpdateViewModel)
+            UserUpdateBody(user, userUpdateViewModel)
         }
     }
 }
 
 @Composable
-fun TopAppBarUpdateView(
+fun TopAppBarUserUpdate(
     navController: NavHostController,
     user: User,
-    userUpdateViewModel: UserUpdateViewModel
+    userUpdateViewModel: UserUpdateViewModel,
+    updateUser:() -> Unit
 ) {
 
     var isSet by rememberSaveable { mutableStateOf(false) }
@@ -69,7 +68,7 @@ fun TopAppBarUpdateView(
         backgroundColor = Color.Transparent,
         elevation = 0.dp,
         navigationIcon = {
-            IconButton(onClick = { navController.navigateUp() }
+            IconButton(onClick = { updateUser() }
             ) {
                 Icon(painterResource(R.drawable.arrow_back_ios),
                     "ir atras",
@@ -107,35 +106,13 @@ fun TopAppBarUpdateView(
 }
 
 @Composable
-fun UpdateFloatingButton(userUpdateViewModel: UserUpdateViewModel, showMessage: () -> Unit) {
-
-    val updateUser by userUpdateViewModel.updateUser.observeAsState(initial = User())
-    val user: User = updateUser
-
-    FloatingActionButton(
-        onClick = {
-            userUpdateViewModel.updateUser(user)
-            showMessage()
-        },
-        backgroundColor = MaterialTheme.colors.primary) {
-
-        Icon(painterResource(R.drawable.save),
-            contentDescription = "Guardar cliente",
-            tint = Color.White,
-            modifier = Modifier.scale(0.7f, 0.7f)
-        )
-
-    }
-
-}
-
-@Composable
-fun UpdateBody(user: User, userUpdateViewModel: UserUpdateViewModel) {
+fun UserUpdateBody(user: User, userUpdateViewModel: UserUpdateViewModel) {
     var name by rememberSaveable { mutableStateOf(user.name) }
     var email by rememberSaveable { mutableStateOf(user.email) }
     var phone by rememberSaveable { mutableStateOf(user.phone) }
     var address by rememberSaveable { mutableStateOf(user.address) }
     var updateUser by rememberSaveable { mutableStateOf(User()) }
+
     updateUser = User(user.id, name, email, phone, address, user.set)
 
     userUpdateViewModel.saveUpdateUser(updateUser)

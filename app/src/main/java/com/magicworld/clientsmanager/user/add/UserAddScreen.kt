@@ -32,7 +32,7 @@ fun UserAddScreen(navController: NavHostController, userAddViewModel: UserAddVie
 
     Scaffold(
         topBar = {
-            TopAppBarAddView( userAddViewModel){
+            TopAppBarUserAdd( userAddViewModel){
                 Toast.makeText(context, "Usuario guardado con exito" , Toast.LENGTH_LONG).show()
                 navController.navigateUp()
             }
@@ -40,20 +40,19 @@ fun UserAddScreen(navController: NavHostController, userAddViewModel: UserAddVie
     ) { padding ->
 
         Box(modifier = Modifier.padding(padding)) {
-            AddBody(userAddViewModel)
+            UserAddBody(userAddViewModel)
         }
     }
 }
 
 
 @Composable
-fun TopAppBarAddView(
+fun TopAppBarUserAdd(
     userAddViewModel: UserAddViewModel,
     showMessage: () -> Unit,
 ) {
     var isSet by rememberSaveable { mutableStateOf(false) }
-    val user by userAddViewModel.user.observeAsState(initial = User())
-    val newUser = user
+    val newUser by userAddViewModel.user.observeAsState(initial = User())
 
     TopAppBar(
         title = { Text(text = "") },
@@ -89,7 +88,7 @@ fun TopAppBarAddView(
 }
 
 @Composable
-fun AddBody(userAddViewModel: UserAddViewModel) {
+fun UserAddBody(userAddViewModel: UserAddViewModel) {
 
     var name by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }

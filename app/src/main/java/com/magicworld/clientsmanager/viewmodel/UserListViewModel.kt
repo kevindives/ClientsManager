@@ -20,9 +20,9 @@ class UserListViewModel: ViewModel() {
     val isLoading : LiveData<Boolean> = _isLoading
 
 
-    fun getUserFromFirebase(){
+    fun getUserFromServer(){
         viewModelScope.launch(Dispatchers.IO) {
-            userLoad.postValue(userListRepository.getSuperheroesFromFireBase())
+            userLoad.postValue(userListRepository.getSuperheroesFromServer())
             _isLoading.postValue(false)
         }
 

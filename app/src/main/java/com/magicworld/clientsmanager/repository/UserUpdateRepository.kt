@@ -10,7 +10,7 @@ class UserUpdateRepository {
 
     private val db = Firebase.firestore
 
-    suspend fun updateUser(user: User):String {
+    suspend fun updateUserInDatabase(user: User):String {
         return try{
             db.collection("users").document(user.id).set(user).await()
             "El cliente ha sido modificado exitosamente"

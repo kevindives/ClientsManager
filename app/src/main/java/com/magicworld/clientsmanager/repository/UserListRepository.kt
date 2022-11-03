@@ -9,16 +9,16 @@ import kotlinx.coroutines.tasks.await
 
 class UserListRepository {
 
-    suspend fun getSuperheroesFromFireBase(): ArrayList<User> {
-        val db = Firebase.firestore
+    private val db = Firebase.firestore
+
+    suspend fun getSuperheroesFromServer(): ArrayList<User> {
 
         val result = db.collection("users").get().await()
-
         val listUser: ArrayList<User> = arrayListOf()
-        for (user in result)
-            listUser.add(user.toObject())
 
+        for (user in result) listUser.add(user.toObject())
         listUser.sortBy { it.set }
+
         return listUser
     }
 }

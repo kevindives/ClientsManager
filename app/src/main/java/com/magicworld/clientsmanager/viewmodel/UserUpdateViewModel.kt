@@ -19,9 +19,9 @@ class UserUpdateViewModel: ViewModel() {
     val messageFromFirebaseDone : LiveData<String> = messageFromFirebase
 
 
-    fun updateUser(user: User) {
+    fun updateUserInDatabase(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-             messageFromFirebase.postValue(userUpdateRepository.updateUser(user))
+             messageFromFirebase.postValue(userUpdateRepository.updateUserInDatabase(user))
         }
 
     }
