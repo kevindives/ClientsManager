@@ -120,6 +120,9 @@ fun ItemUser(user: User, navController: NavHostController) {
         onEditSelected = {
             navController.currentBackStackEntry?.savedStateHandle?.set("user", user)
             navController.navigate(UserUpdateScreen.route)
-        }, onUserSelected = {})
+        }, onUserSelected = {
+            navController.currentBackStackEntry?.savedStateHandle?.set("user", user)
+            navController.navigate(BillAddScreen.route)
+        })
 }
 
