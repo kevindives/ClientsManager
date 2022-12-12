@@ -94,23 +94,6 @@ fun BillAddScreen(
 }
 
 @Composable
-fun FAV(currentBill: Bill, navController: NavHostController) {
-    FloatingActionButton(
-        onClick = {
-            navController.currentBackStackEntry?.savedStateHandle?.set("bill", currentBill)
-            navController.navigate(Routes.BillListScreen.route)
-        },
-        backgroundColor = turquesaMedio
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.PersonAdd,
-            contentDescription = "Crear cliente", tint = Color.White,
-            modifier = Modifier.scale(1.5f, 1.5f)
-        )
-    }
-}
-
-@Composable
 fun TopAppBarBillAdd(
     navController: NavHostController,
     productListViewModel: ProductListViewModel,
@@ -166,6 +149,23 @@ fun TopAppBarBillAdd(
             billAddViewModel.saveBillProduct(product)
         }
     )
+}
+
+@Composable
+fun FAV(currentBill: Bill, navController: NavHostController) {
+    FloatingActionButton(
+        onClick = {
+            navController.currentBackStackEntry?.savedStateHandle?.set("bill", currentBill)
+            navController.navigate(Routes.BillListScreen.route)
+        },
+        backgroundColor = turquesaMedio
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.PersonAdd,
+            contentDescription = "Crear cliente", tint = Color.White,
+            modifier = Modifier.scale(1.5f, 1.5f)
+        )
+    }
 }
 
 @Composable
@@ -283,42 +283,6 @@ fun BillBodyAdd(
 }
 
 @Composable
-fun TotalResults(totalBruto: Long) {
-
-    Row(Modifier
-        .fillMaxWidth()
-        .padding(vertical = 8.dp, horizontal = 4.dp)) {
-        Box(Modifier.weight(1f))
-        Row(Modifier.weight(1f)) {
-            Column(Modifier.weight(1f)) {
-                Text(text = "Total Bruto", fontSize = 12.sp)
-                Text(text = "IVA 19%", fontSize = 12.sp)
-                Text(text = "Total a Pagar", fontSize = 12.sp)
-            }
-            Column(Modifier.weight(1f)) {
-                Text(text = totalBruto.toString(),
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.DarkGray,
-                    modifier = Modifier.fillMaxWidth())
-                Text(text = (totalBruto * 0.19).toLong().toString(),
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.DarkGray,
-                    modifier = Modifier.fillMaxWidth())
-                Text(text = ((totalBruto * 0.19) + totalBruto).toLong().toString(),
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.DarkGray,
-                    modifier = Modifier.fillMaxWidth())
-            }
-
-        }
-    }
-
-}
-
-@Composable
 fun TableHeader() {
     Row(Modifier
         .fillMaxWidth()
@@ -367,4 +331,39 @@ fun MyBillProductText(product: Product, onItemListSelected: () -> Unit, sumTotal
 
 }
 
+@Composable
+fun TotalResults(totalBruto: Long) {
+
+    Row(Modifier
+        .fillMaxWidth()
+        .padding(vertical = 8.dp, horizontal = 4.dp)) {
+        Box(Modifier.weight(1f))
+        Row(Modifier.weight(1f)) {
+            Column(Modifier.weight(1f)) {
+                Text(text = "Total Bruto", fontSize = 12.sp)
+                Text(text = "IVA 19%", fontSize = 12.sp)
+                Text(text = "Total a Pagar", fontSize = 12.sp)
+            }
+            Column(Modifier.weight(1f)) {
+                Text(text = totalBruto.toString(),
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.DarkGray,
+                    modifier = Modifier.fillMaxWidth())
+                Text(text = (totalBruto * 0.19).toLong().toString(),
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.DarkGray,
+                    modifier = Modifier.fillMaxWidth())
+                Text(text = ((totalBruto * 0.19) + totalBruto).toLong().toString(),
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.DarkGray,
+                    modifier = Modifier.fillMaxWidth())
+            }
+
+        }
+    }
+
+}
 
